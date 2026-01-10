@@ -5,58 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Calorie Tracker Pro</title>
     <style>
-        /* --- "PRETTY" STYLES RESTORED --- */
+        /* --- STYLES --- */
         :root { --primary-grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --secondary-grad: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         
-        body {
-            background: var(--primary-grad);
-            min-height: 100vh;
-            padding: 20px;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        body { background: var(--primary-grad); min-height: 100vh; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; }
         
-        h1 {
-            text-align: center;
-            color: white;
-            margin-bottom: 25px;
-            font-size: 2.2em;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
+        h1 { text-align: center; color: white; margin-bottom: 25px; font-size: 2.2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
 
-        /* Main Content Card Style */
-        .main-card, .api-box, .view {
-            background: rgba(255,255,255,0.95);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-        }
+        /* Cards */
+        .main-card, .api-box, .view { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); margin-bottom: 20px; }
         
         /* Tabs */
         .tabs { display: flex; gap: 15px; margin-bottom: 25px; justify-content: center; }
-        .tab {
-            padding: 12px 24px;
-            border: none;
-            background: rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-            font-weight: 600;
-            color: #667eea;
-            border-radius: 30px; /* Pill shape */
-            transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .tab.active {
-            background: white;
-            color: #764ba2;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        }
+        .tab { padding: 12px 24px; border: none; background: rgba(255, 255, 255, 0.8); cursor: pointer; font-weight: 600; color: #667eea; border-radius: 30px; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .tab.active { background: white; color: #764ba2; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
 
         .view { display: none; animation: fadeIn 0.4s; }
         .view.active { display: block; }
@@ -65,31 +29,12 @@
         /* Inputs */
         .input-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
-        input[type="text"], input[type="password"], textarea {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: 0.3s;
-            background: #f9f9f9;
-        }
+        input[type="text"], input[type="password"], textarea { width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; transition: 0.3s; background: #f9f9f9; }
         input:focus, textarea:focus { border-color: #667eea; outline: none; background: white; }
         textarea { resize: vertical; min-height: 100px; }
         
         /* Buttons */
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            color: white;
-            margin-top: 15px;
-        }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: 600; font-size: 16px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; color: white; margin-top: 15px; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .btn:active { transform: scale(0.98); }
         
@@ -104,122 +49,10 @@
         .api-box a { color: #f093fb; }
         .api-box input { background: #444; border-color: #555; color: white; }
 
-        /* Results Area */
-        .result-container {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 25px;
-            display: none;
-            border: 2px dashed #667eea;
-        }
+        /* Results */
+        .result-container { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-top: 25px; display: none; border: 2px dashed #667eea; }
         .result-container h3 { color: #667eea; margin-bottom: 15px; text-align: center; }
 
-        /* Macro Grid Style */
-        .macro-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .macro-box {
-            background: white;
-            padding: 15px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .macro-val { font-size: 1.4em; font-weight: 800; color: #333; }
-        .macro-lbl { font-size: 0.85em; color: #764ba2; text-transform: uppercase; margin-top: 5px; font-weight: 600;}
-
-        /* Table Styles */
-        table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 20px; }
-        th { text-align: left; background: #f5f5f5; color: #667eea; font-weight: 600; padding: 12px; first-child: border-radius: 10px 0 0 10px; last-child: border-radius: 0 10px 10px 0; }
-        td { padding: 12px; border-bottom: 1px solid #eee; }
-        tr:hover td { background: #f9f9f9; }
-        .delete-btn { color: #ff4757; cursor: pointer; font-weight: bold; border: none; background: none; padding: 5px 10px; border-radius: 5px; }
-        .delete-btn:hover { background: #ffe0e3; }
-
-        /* Image Preview */
-        #preview { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; margin-top: 15px; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid #eee;}
-        
-        /* File Input Styling Hack */
-        input[type="file"] { padding: 10px; background: white; }
-
-        /* Loading Spinner */
-        .loader { display: none; text-align: center; padding: 30px; color: #667eea; font-weight: 600; font-size: 1.1em; }
-        .loader::after { content: '...'; animation: dots 1.5s steps(4, end) infinite; }
-        @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60%, 100% { content: '...'; } }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .macro-row { grid-template-columns: repeat(2, 1fr); }
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h1>🍽️ AI Calorie Tracker Pro</h1>
-
-    <div id="apiSetup" class="api-box">
-        <h3>⚙️ Setup Required</h3>
-        <p style="font-size: 0.9em; margin: 10px 0;">Enter your Anthropic API Key (starts with sk-ant...). <a href="https://console.anthropic.com/" target="_blank">Get one here</a>.</p>
-        <input type="password" id="apiKeyInput" placeholder="sk-ant-...">
-        <button class="btn btn-save-key" onclick="saveKey()">Save Key</button>
-    </div>
-
-    <div class="tabs">
-        <button class="tab active" onclick="showView('logger')">📝 Log Food</button>
-        <button class="tab" onclick="showView('history')">📊 History</button>
-    </div>
-
-    <div id="logger" class="view active">
-        <div class="input-group">
-            <label>✍️ Describe your food (or paste an image)</label>
-            <textarea id="descInput" rows="4" placeholder="e.g., grilled chicken breast, brown rice, steamed broccoli with olive oil..."></textarea>
-            <div style="margin-top: 15px;">
-                 <label>📸 Upload Image</label>
-                 <input type="file" id="fileInput" accept="image/*">
-            </div>
-            <img id="preview" alt="Image Preview">
-        </div>
-
-        <button class="btn btn-analyze" onclick="analyze()">🤖 Analyze with AI</button>
-        
-        <div id="loader" class="loader">Analyzing nutrition</div>
-
-        <div id="resultCard" class="result-container">
-            <h3 id="resFood">Food Name</h3>
-            <div class="macro-row">
-                <div class="macro-box"><div class="macro-val" id="resCal">0</div><div class="macro-lbl">Calories</div></div>
-                <div class="macro-box"><div class="macro-val" id="resPro">0</div><div class="macro-lbl">Protein</div></div>
-                <div class="macro-box"><div class="macro-val" id="resCarb">0</div><div class="macro-lbl">Carbs</div></div>
-                <div class="macro-box"><div class="macro-val" id="resFat">0</div><div class="macro-lbl">Fat</div></div>
-            </div>
-            <button class="btn btn-add" onclick="addEntry()">➕ Add to Today's Log</button>
-        </div>
-    </div>
-
-    <div id="history" class="view">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
-            <h2 style="color: #667eea; font-size: 1.5em;">Today's Log</h2>
-            <div>
-                <button class="btn btn-sync" onclick="sync()" style="width: auto; padding: 10px 20px; margin:0; font-size: 0.9em;">☁️ Sync to Sheets</button>
-                <div id="syncStatus" style="text-align:right; font-size:0.8em; color:#666; margin-top:5px; height:20px; font-weight: 600;"></div>
-            </div>
-        </div>
-
-        <div style="overflow-x: auto; background: white; border-radius: 12px; padding: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-            <table id="logTable">
-                <thead>
-                    <tr><th>Time</th><th>Food</th><th>Cal</th><th>P (g)</th><th>C (g)</th><th>F (g)</th><th></th></tr>
-                </thead>
-                <tbody id="logBody"></tbody>
-            </table>
-        </div>
-        
-        <div class="result-container" style="display:block; background: #e8ebff; border: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);">
-            <h3 style="margin-bottom: 10px; font-size: 1.1em;">Daily Totals</h3>
-            <div class="macro-row">
-                 <div class="macro-box" style="background: rgba(255,255,25
+        /* Macro Grid */
+        .macro-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 15px; }
+        .macro-box { background: white; padding: 15
