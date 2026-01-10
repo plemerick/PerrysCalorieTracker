@@ -3,68 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Calorie Tracker</title>
+    <title>AI Calorie Tracker Pro</title>
     <style>
-        /* --- STYLES --- */
-        :root { --primary: #667eea; --secondary: #764ba2; --bg: #f4f7f6; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, system-ui, sans-serif; }
-        body { background: linear-gradient(135deg, var(--primary), var(--secondary)); min-height: 100vh; padding: 20px; color: #333; }
-        .container { max-width: 800px; margin: 0 auto; background: rgba(255,255,255,0.95); border-radius: 20px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        /* --- "PRETTY" STYLES RESTORED --- */
+        :root { --primary-grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --secondary-grad: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         
-        h1 { text-align: center; color: var(--secondary); margin-bottom: 20px; }
+        body {
+            background: var(--primary-grad);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Main Content Card Style */
+        .main-card, .api-box, .view {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
         
         /* Tabs */
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
-        .tab { flex: 1; padding: 10px; border: none; background: none; cursor: pointer; font-weight: bold; color: #888; border-radius: 8px; transition: 0.3s; }
-        .tab.active { background: var(--primary); color: white; }
-        .view { display: none; animation: fadeIn 0.3s; }
+        .tabs { display: flex; gap: 15px; margin-bottom: 25px; justify-content: center; }
+        .tab {
+            padding: 12px 24px;
+            border: none;
+            background: rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            font-weight: 600;
+            color: #667eea;
+            border-radius: 30px; /* Pill shape */
+            transition: 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .tab.active {
+            background: white;
+            color: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .view { display: none; animation: fadeIn 0.4s; }
         .view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Inputs */
-        .input-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9em; }
-        input, textarea { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; font-size: 16px; transition: 0.3s; }
-        input:focus, textarea:focus { border-color: var(--primary); outline: none; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
+        input[type="text"], input[type="password"], textarea {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: 0.3s;
+            background: #f9f9f9;
+        }
+        input:focus, textarea:focus { border-color: #667eea; outline: none; background: white; }
+        textarea { resize: vertical; min-height: 100px; }
         
         /* Buttons */
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; transition: transform 0.2s; color: white; margin-top: 10px; }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            margin-top: 15px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
         .btn:active { transform: scale(0.98); }
-        .btn-analyze { background: linear-gradient(to right, #f093fb, #f5576c); }
+        
+        .btn-analyze { background: var(--secondary-grad); font-size: 1.1em; }
         .btn-add { background: #2ecc71; }
         .btn-sync { background: #3498db; }
-        .btn-save-key { background: #333; }
+        .btn-save-key { background: #333; margin-top: 10px; }
 
         /* API Key Box */
-        .api-box { background: #333; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+        .api-box { background: #333; color: white; border: 1px solid #444; }
+        .api-box h3 { color: #f093fb; margin-bottom: 10px; }
         .api-box a { color: #f093fb; }
+        .api-box input { background: #444; border-color: #555; color: white; }
 
-        /* Results & Tables */
-        .result-card { background: #fff; border: 2px solid #eee; border-radius: 10px; padding: 15px; margin-top: 15px; display: none; }
-        .macro-row { display: flex; justify-content: space-between; text-align: center; margin-top: 10px; }
-        .macro-box { background: #f8f9fa; padding: 10px; border-radius: 8px; flex: 1; margin: 0 5px; }
-        .macro-val { font-size: 1.2em; font-weight: bold; color: var(--secondary); }
-        .macro-lbl { font-size: 0.8em; color: #666; }
+        /* Results Area */
+        .result-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+            display: none;
+            border: 2px dashed #667eea;
+        }
+        .result-container h3 { color: #667eea; margin-bottom: 15px; text-align: center; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th { text-align: left; color: #666; font-size: 0.85em; padding: 5px; border-bottom: 1px solid #ddd; }
-        td { padding: 10px 5px; border-bottom: 1px solid #eee; }
-        .delete-btn { color: red; cursor: pointer; font-weight: bold; border: none; background: none; }
+        /* Macro Grid Style */
+        .macro-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .macro-box {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .macro-val { font-size: 1.4em; font-weight: 800; color: #333; }
+        .macro-lbl { font-size: 0.85em; color: #764ba2; text-transform: uppercase; margin-top: 5px; font-weight: 600;}
+
+        /* Table Styles */
+        table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 20px; }
+        th { text-align: left; background: #f5f5f5; color: #667eea; font-weight: 600; padding: 12px; first-child: border-radius: 10px 0 0 10px; last-child: border-radius: 0 10px 10px 0; }
+        td { padding: 12px; border-bottom: 1px solid #eee; }
+        tr:hover td { background: #f9f9f9; }
+        .delete-btn { color: #ff4757; cursor: pointer; font-weight: bold; border: none; background: none; padding: 5px 10px; border-radius: 5px; }
+        .delete-btn:hover { background: #ffe0e3; }
 
         /* Image Preview */
-        #preview { width: 100%; max-height: 200px; object-fit: cover; border-radius: 10px; margin-top: 10px; display: none; }
+        #preview { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; margin-top: 15px; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid #eee;}
         
+        /* File Input Styling Hack */
+        input[type="file"] { padding: 10px; background: white; }
+
         /* Loading Spinner */
-        .loader { display: none; text-align: center; padding: 20px; color: var(--primary); font-weight: bold; }
+        .loader { display: none; text-align: center; padding: 30px; color: #667eea; font-weight: 600; font-size: 1.1em; }
+        .loader::after { content: '...'; animation: dots 1.5s steps(4, end) infinite; }
+        @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60%, 100% { content: '...'; } }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .macro-row { grid-template-columns: repeat(2, 1fr); }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🥗 AI Calorie Tracker</h1>
+    <h1>🍽️ AI Calorie Tracker Pro</h1>
 
     <div id="apiSetup" class="api-box">
-        <h3>🔑 Setup Required</h3>
+        <h3>⚙️ Setup Required</h3>
         <p style="font-size: 0.9em; margin: 10px 0;">Enter your Anthropic API Key (starts with sk-ant...). <a href="https://console.anthropic.com/" target="_blank">Get one here</a>.</p>
         <input type="password" id="apiKeyInput" placeholder="sk-ant-...">
         <button class="btn btn-save-key" onclick="saveKey()">Save Key</button>
@@ -77,22 +176,25 @@
 
     <div id="logger" class="view active">
         <div class="input-group">
-            <label>Description (or paste image)</label>
-            <textarea id="descInput" rows="3" placeholder="e.g. 2 eggs and toast"></textarea>
-            <input type="file" id="fileInput" accept="image/*" style="margin-top:5px">
-            <img id="preview">
+            <label>✍️ Describe your food (or paste an image)</label>
+            <textarea id="descInput" rows="4" placeholder="e.g., grilled chicken breast, brown rice, steamed broccoli with olive oil..."></textarea>
+            <div style="margin-top: 15px;">
+                 <label>📸 Upload Image</label>
+                 <input type="file" id="fileInput" accept="image/*">
+            </div>
+            <img id="preview" alt="Image Preview">
         </div>
 
-        <button class="btn btn-analyze" onclick="analyze()">✨ Analyze with AI</button>
+        <button class="btn btn-analyze" onclick="analyze()">🤖 Analyze with AI</button>
         
-        <div id="loader" class="loader">🤖 Analyzing... please wait...</div>
+        <div id="loader" class="loader">Analyzing nutrition</div>
 
-        <div id="resultCard" class="result-card">
+        <div id="resultCard" class="result-container">
             <h3 id="resFood">Food Name</h3>
             <div class="macro-row">
-                <div class="macro-box"><div class="macro-val" id="resCal">0</div><div class="macro-lbl">Cal</div></div>
-                <div class="macro-box"><div class="macro-val" id="resPro">0</div><div class="macro-lbl">Prot</div></div>
-                <div class="macro-box"><div class="macro-val" id="resCarb">0</div><div class="macro-lbl">Carb</div></div>
+                <div class="macro-box"><div class="macro-val" id="resCal">0</div><div class="macro-lbl">Calories</div></div>
+                <div class="macro-box"><div class="macro-val" id="resPro">0</div><div class="macro-lbl">Protein</div></div>
+                <div class="macro-box"><div class="macro-val" id="resCarb">0</div><div class="macro-lbl">Carbs</div></div>
                 <div class="macro-box"><div class="macro-val" id="resFat">0</div><div class="macro-lbl">Fat</div></div>
             </div>
             <button class="btn btn-add" onclick="addEntry()">➕ Add to Today's Log</button>
@@ -100,246 +202,24 @@
     </div>
 
     <div id="history" class="view">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3>Today's Log</h3>
-            <button class="btn btn-sync" onclick="sync()" style="width: auto; padding: 8px 15px; margin:0;">☁️ Sync to Sheets</button>
-        </div>
-        <div id="syncStatus" style="text-align:right; font-size:0.8em; color:#666; margin-top:5px; height:15px;"></div>
-
-        <table id="logTable">
-            <thead>
-                <tr><th>Time</th><th>Food</th><th>Cal</th><th>P</th><th>C</th><th>F</th><th></th></tr>
-            </thead>
-            <tbody id="logBody"></tbody>
-        </table>
-        
-        <div class="result-card" style="display:block; background:#f0f3ff; border:none;">
-            <div class="macro-row">
-                <div class="macro-box"><b>Total</b></div>
-                <div class="macro-box"><div class="macro-val" id="totalCal">0</div></div>
-                <div class="macro-box"><div class="macro-val" id="totalPro">0</div></div>
-                <div class="macro-box"><div class="macro-val" id="totalCarb">0</div></div>
-                <div class="macro-box"><div class="macro-val" id="totalFat">0</div></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
+            <h2 style="color: #667eea; font-size: 1.5em;">Today's Log</h2>
+            <div>
+                <button class="btn btn-sync" onclick="sync()" style="width: auto; padding: 10px 20px; margin:0; font-size: 0.9em;">☁️ Sync to Sheets</button>
+                <div id="syncStatus" style="text-align:right; font-size:0.8em; color:#666; margin-top:5px; height:20px; font-weight: 600;"></div>
             </div>
         </div>
-    </div>
-</div>
 
-<script>
-    // --- CONFIGURATION ---
-    // Your Google Script URL is already inserted below:
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywngLrksoAZXZUZUt9zQjHS5BaclAcacjdykICeG-TNrrdwKi0SAR8bHInK9jNWh3awA/exec"; 
-
-    // --- STATE ---
-    let logs = JSON.parse(localStorage.getItem('logs') || '[]');
-    let currentAnalysis = null;
-    let imageBase64 = null;
-
-    // --- INIT ---
-    checkKey();
-    renderLogs();
-
-    // --- FUNCTIONS ---
-    function checkKey() {
-        if(localStorage.getItem('anthropicKey')) {
-            document.getElementById('apiSetup').style.display = 'none';
-        }
-    }
-
-    function saveKey() {
-        const key = document.getElementById('apiKeyInput').value.trim();
-        if(key.startsWith('sk-ant')) {
-            localStorage.setItem('anthropicKey', key);
-            checkKey();
-        } else {
-            alert('Invalid Key');
-        }
-    }
-
-    function showView(viewId) {
-        document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-        document.getElementById(viewId).classList.add('active');
-        event.target.classList.add('active');
-    }
-
-    // Image Handling
-    document.getElementById('fileInput').addEventListener('change', handleFile);
-    document.addEventListener('paste', e => {
-        if(e.clipboardData.items[0].type.startsWith('image')) {
-            handleFile({ target: { files: [e.clipboardData.items[0].getAsFile()] } });
-        }
-    });
-
-    function handleFile(e) {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            document.getElementById('preview').src = event.target.result;
-            document.getElementById('preview').style.display = 'block';
-            // Extract base64 (remove data:image/jpeg;base64, prefix)
-            imageBase64 = event.target.result.split(',')[1];
-            // Get mime type
-            window.currentMime = event.target.result.split(';')[0].split(':')[1];
-        };
-        reader.readAsDataURL(file);
-    }
-
-    // AI Analysis
-    async function analyze() {
-        const desc = document.getElementById('descInput').value;
-        const apiKey = localStorage.getItem('anthropicKey');
+        <div style="overflow-x: auto; background: white; border-radius: 12px; padding: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+            <table id="logTable">
+                <thead>
+                    <tr><th>Time</th><th>Food</th><th>Cal</th><th>P (g)</th><th>C (g)</th><th>F (g)</th><th></th></tr>
+                </thead>
+                <tbody id="logBody"></tbody>
+            </table>
+        </div>
         
-        if(!apiKey) return alert('Please enter API Key first');
-        if(!desc && !imageBase64) return alert('Enter text or image');
-
-        document.getElementById('loader').style.display = 'block';
-        document.getElementById('resultCard').style.display = 'none';
-
-        // Build Messages
-        let messages = [];
-        let content = [];
-        
-        if(imageBase64) {
-            content.push({
-                type: "image",
-                source: { type: "base64", media_type: window.currentMime || "image/jpeg", data: imageBase64 }
-            });
-        }
-        if(desc) {
-            content.push({ type: "text", text: desc || "Analyze this food" });
-        }
-        messages.push({ role: "user", content: content });
-
-        try {
-            // Call Google Script as Proxy
-            const response = await fetch(GOOGLE_SCRIPT_URL, {
-                method: "POST",
-                // Crucial: Use text/plain to avoid CORS preflight options request
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify({
-                    action: 'analyze',
-                    apiKey: apiKey,
-                    system: "You are a nutritionist. Return ONLY JSON: {\"food\": \"string name\", \"calories\": number, \"protein\": number, \"carbs\": number, \"fat\": number}. No markdown.",
-                    messages: messages
-                })
-            });
-
-            const data = await response.json();
-            
-            if(data.error) throw new Error(data.error);
-
-            // Parse Claude's inner JSON content
-            let text = data.content[0].text;
-            // Clean markdown if present
-            text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-            const nutrients = JSON.parse(text);
-
-            // Show Results
-            currentAnalysis = nutrients;
-            document.getElementById('resFood').innerText = nutrients.food;
-            document.getElementById('resCal').innerText = nutrients.calories;
-            document.getElementById('resPro').innerText = nutrients.protein;
-            document.getElementById('resCarb').innerText = nutrients.carbs;
-            document.getElementById('resFat').innerText = nutrients.fat;
-            
-            document.getElementById('resultCard').style.display = 'block';
-
-        } catch (e) {
-            alert("Error: " + e.message);
-        } finally {
-            document.getElementById('loader').style.display = 'none';
-        }
-    }
-
-    // Logging
-    function addEntry() {
-        if(!currentAnalysis) return;
-        const entry = {
-            ...currentAnalysis,
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-            date: new Date().toLocaleDateString()
-        };
-        logs.unshift(entry); // Add to top
-        localStorage.setItem('logs', JSON.stringify(logs));
-        renderLogs();
-        showView('history');
-        
-        // Reset Inputs
-        document.getElementById('descInput').value = '';
-        document.getElementById('preview').style.display = 'none';
-        document.getElementById('resultCard').style.display = 'none';
-        imageBase64 = null;
-        currentAnalysis = null;
-    }
-
-    function renderLogs() {
-        const tbody = document.getElementById('logBody');
-        tbody.innerHTML = '';
-        
-        let totals = { cal: 0, pro: 0, carb: 0, fat: 0 };
-
-        logs.forEach((log, index) => {
-            totals.cal += log.calories || 0;
-            totals.pro += log.protein || 0;
-            totals.carb += log.carbs || 0;
-            totals.fat += log.fat || 0;
-
-            tbody.innerHTML += `
-                <tr>
-                    <td>${log.time}</td>
-                    <td>${log.food}</td>
-                    <td>${log.calories}</td>
-                    <td>${log.protein}</td>
-                    <td>${log.carbs}</td>
-                    <td>${log.fat}</td>
-                    <td><button class="delete-btn" onclick="remove(${index})">×</button></td>
-                </tr>
-            `;
-        });
-
-        document.getElementById('totalCal').innerText = totals.cal;
-        document.getElementById('totalPro').innerText = totals.pro;
-        document.getElementById('totalCarb').innerText = totals.carb;
-        document.getElementById('totalFat').innerText = totals.fat;
-    }
-
-    function remove(index) {
-        logs.splice(index, 1);
-        localStorage.setItem('logs', JSON.stringify(logs));
-        renderLogs();
-    }
-
-    // Sync
-    async function sync() {
-        const btn = document.querySelector('.btn-sync');
-        const status = document.getElementById('syncStatus');
-        
-        if(logs.length === 0) return alert("Nothing to sync");
-
-        btn.disabled = true;
-        status.innerText = "Syncing...";
-
-        try {
-            await fetch(GOOGLE_SCRIPT_URL, {
-                method: "POST",
-                headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify({
-                    action: 'sync',
-                    date: new Date().toLocaleDateString(),
-                    entries: logs
-                })
-            });
-            status.innerText = "✓ Synced successfully!";
-            setTimeout(() => status.innerText = "", 3000);
-        } catch(e) {
-            status.innerText = "Error syncing";
-            alert("Sync failed: " + e.message);
-        } finally {
-            btn.disabled = false;
-        }
-    }
-</script>
-
-</body>
-</html>
+        <div class="result-container" style="display:block; background: #e8ebff; border: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);">
+            <h3 style="margin-bottom: 10px; font-size: 1.1em;">Daily Totals</h3>
+            <div class="macro-row">
+                 <div class="macro-box" style="background: rgba(255,255,25
