@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Calorie Tracker Pro</title>
     <style>
-        /* --- PRO STYLES RESTORED --- */
+        /* --- PRO STYLES --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -16,73 +16,46 @@
         }
         .container { max-width: 1000px; margin: 0 auto; }
         h1 { color: white; text-align: center; margin-bottom: 20px; font-size: 2.2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-        
-        /* Cards */
-        .card, .api-setup, .tab-content { 
-            background: rgba(255, 255, 255, 0.96); 
-            border-radius: 15px; 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
-        }
-
-        /* API Setup */
+        .card, .api-setup, .tab-content { background: rgba(255, 255, 255, 0.96); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
         .api-setup h3 { color: #667eea; margin-bottom: 10px; }
         .api-setup input { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; margin-top: 5px; }
         .api-setup button { margin-top: 10px; padding: 10px 20px; background: #2ecc71; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-
-        /* Tabs */
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
         .tab { padding: 12px 24px; background: rgba(255, 255, 255, 0.8); border: none; border-radius: 30px; cursor: pointer; font-weight: 600; color: #667eea; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .tab.active { background: white; color: #764ba2; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
-
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Inputs */
         label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
         textarea, input[type="date"], input[type="month"] { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: inherit; margin-bottom: 15px; }
         textarea { min-height: 100px; resize: vertical; }
         textarea:focus, input:focus { outline: none; border-color: #667eea; }
-
-        /* Image Upload */
         .file-input-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
         input[type="file"] { display: none; }
         .file-input-label { display: block; padding: 15px; background: #f8f9fa; border: 2px dashed #667eea; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.3s; }
         .file-input-label:hover { background: #e8ebff; }
         .preview-image { max-width: 100%; max-height: 250px; border-radius: 8px; display: none; margin-top: 10px; border: 2px solid #eee; }
-
-        /* Buttons */
         button.action-btn { width: 100%; padding: 14px; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
         button.action-btn:hover { transform: translateY(-2px); }
         .btn-analyze { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .btn-add { background: #2ecc71; margin-top: 15px; }
         .btn-sync { background: #3498db; width: auto; padding: 10px 20px; }
-
-        /* Results */
         .analysis-result { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; border: 2px dashed #667eea; }
         .macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0; }
         .macro-item { background: white; padding: 10px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .macro-label { font-size: 0.75em; color: #764ba2; text-transform: uppercase; margin-bottom: 4px; font-weight: bold; }
         .macro-value { font-size: 1.2em; font-weight: 800; color: #333; }
-
-        /* Summary Cards */
         .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .summary-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
         .summary-card h3 { font-size: 0.9em; margin-bottom: 5px; opacity: 0.9; }
         .summary-card .value { font-size: 1.8em; font-weight: bold; }
         .summary-card .label { font-size: 0.8em; opacity: 0.8; }
-
-        /* Tables */
         .table-container { overflow-x: auto; margin-top: 10px; }
         table { width: 100%; border-collapse: collapse; }
         th { background: #f5f5f5; color: #667eea; padding: 10px; text-align: left; font-size: 0.9em; }
         td { padding: 10px; border-bottom: 1px solid #eee; font-size: 0.9em; }
         .delete-btn { color: #ff4757; background: none; border: none; cursor: pointer; font-weight: bold; }
-
         .loading { display: none; text-align: center; color: #667eea; padding: 20px; font-weight: bold; }
-        
         @media (max-width: 600px) { .macro-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
@@ -137,7 +110,6 @@
                 <button class="action-btn btn-sync" onclick="sync()">☁️ Sync to Sheets</button>
             </div>
             <div id="syncStatus" style="text-align:right; font-size:0.8em; color:#666; margin-top:5px;"></div>
-            
             <input type="date" id="logDate">
             <div class="table-container">
                 <table id="logTable">
@@ -165,8 +137,7 @@
         <div class="card">
             <h3>📈 Weekly Summary</h3>
             <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <input type="date" id="weekStart">
-                <input type="date" id="weekEnd">
+                <input type="date" id="weekStart"><input type="date" id="weekEnd">
                 <button onclick="loadWeekly()" style="padding:0 15px; border-radius:8px; border:none; background:#667eea; color:white;">Load</button>
             </div>
             <div class="summary-cards">
@@ -193,27 +164,19 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <script>
-    // =========================================
-    // === CONFIGURATION ===
-    // =========================================
-    
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNgqvMglvRHgtwf44vxTLlYozCoVMch5Mq5E2wMg8EY5viVR23EiQwY1sOR-ZtMTFxYw/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6td_9d6eI-R2bFfGBihHeH1_yqDdvbfMpsbvgTNlVJbAMj7q-345kuBDhMcv5UjheMA/exec"; 
 
-    // --- STATE ---
     let foodLog = JSON.parse(localStorage.getItem('foodLog') || '{}');
     let currentAnalysis = null;
     let imageBase64 = null;
 
-    // --- INIT ---
     initDates();
     checkKey();
     displayLog();
 
-    // --- FUNCTIONS ---
     function initDates() {
         const today = new Date();
         document.getElementById('logDate').valueAsDate = today;
@@ -222,16 +185,12 @@
         const lastWeek = new Date(); lastWeek.setDate(today.getDate() - 6);
         document.getElementById('weekStart').valueAsDate = lastWeek;
         document.getElementById('monthSelect').value = today.toISOString().substring(0, 7);
-        
-        // Listeners
         document.getElementById('logDate').addEventListener('change', displayLog);
         document.getElementById('dailyDate').addEventListener('change', loadDaily);
     }
 
     function checkKey() {
-        if(localStorage.getItem('anthropicApiKey')) {
-            document.getElementById('apiSetup').style.display = 'none';
-        }
+        if(localStorage.getItem('anthropicApiKey')) document.getElementById('apiSetup').style.display = 'none';
     }
 
     function saveApiKey() {
@@ -252,12 +211,9 @@
         if(id === 'daily') loadDaily();
     }
 
-    // Image Handling
     document.getElementById('fileInput').addEventListener('change', handleFile);
     document.addEventListener('paste', e => {
-        if(e.clipboardData.items[0]?.type.startsWith('image')) {
-            handleFile({ target: { files: [e.clipboardData.items[0].getAsFile()] } });
-        }
+        if(e.clipboardData.items[0]?.type.startsWith('image')) handleFile({ target: { files: [e.clipboardData.items[0].getAsFile()] } });
     });
 
     function handleFile(e) {
@@ -272,12 +228,10 @@
         reader.readAsDataURL(file);
     }
 
-    // AI Analysis
     async function analyze() {
         const desc = document.getElementById('descInput').value;
         const apiKey = localStorage.getItem('anthropicApiKey');
-        
-        if(!apiKey) return alert('Enter API Key first');
+        if(!apiKey) return alert('Enter API Key');
         if(!desc && !imageBase64) return alert('Enter text or image');
 
         document.getElementById('loader').style.display = 'block';
@@ -286,9 +240,7 @@
         let messages = [];
         let content = [];
         
-        if(imageBase64) {
-            content.push({ type: "image", source: { type: "base64", media_type: window.currentMime || "image/jpeg", data: imageBase64 } });
-        }
+        if(imageBase64) content.push({ type: "image", source: { type: "base64", media_type: window.currentMime || "image/jpeg", data: imageBase64 } });
         if(desc) content.push({ type: "text", text: desc });
         else content.push({ type: "text", text: "Analyze this food image." });
 
@@ -301,32 +253,22 @@
                 body: JSON.stringify({
                     action: 'analyze',
                     apiKey: apiKey,
-                    system: "You are a nutritional expert. Return ONLY raw JSON (no markdown): {\"food\": \"string\", \"calories\": int, \"protein\": int, \"carbs\": int, \"fat\": int}.",
+                    system: "You are a nutritional expert. Return ONLY raw JSON: {\"food\": \"string\", \"calories\": int, \"protein\": int, \"carbs\": int, \"fat\": int}.",
                     messages: messages
                 })
             });
 
             const data = await response.json();
-            
-            // Error Handling
-            if (data.error) throw new Error(typeof data.error === 'object' ? data.error.message : data.error);
+            if(data.error) throw new Error(data.error);
 
-            // ROBUST JSON PARSING (The Fix)
-            let text = data.content[0].text;
-            const firstBrace = text.indexOf('{');
-            const lastBrace = text.lastIndexOf('}');
-            if (firstBrace !== -1 && lastBrace !== -1) {
-                text = text.substring(firstBrace, lastBrace + 1);
-            }
-            const nutrients = JSON.parse(text);
-
-            currentAnalysis = nutrients;
-            document.getElementById('resFood').innerText = nutrients.food;
-            document.getElementById('resCal').innerText = nutrients.calories;
-            document.getElementById('resPro').innerText = nutrients.protein;
-            document.getElementById('resCarb').innerText = nutrients.carbs;
-            document.getElementById('resFat').innerText = nutrients.fat;
+            // The data comes back PRE-CLEANED from Google Script now
+            currentAnalysis = data;
             
+            document.getElementById('resFood').innerText = currentAnalysis.food;
+            document.getElementById('resCal').innerText = currentAnalysis.calories;
+            document.getElementById('resPro').innerText = currentAnalysis.protein;
+            document.getElementById('resCarb').innerText = currentAnalysis.carbs;
+            document.getElementById('resFat').innerText = currentAnalysis.fat;
             document.getElementById('analysisResult').style.display = 'block';
 
         } catch(e) {
@@ -336,17 +278,14 @@
         }
     }
 
-    // Logging
     function addEntry() {
         if(!currentAnalysis) return;
         const date = document.getElementById('logDate').value;
         if(!foodLog[date]) foodLog[date] = [];
-        
         foodLog[date].unshift({
             time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
             ...currentAnalysis
         });
-        
         localStorage.setItem('foodLog', JSON.stringify(foodLog));
         displayLog();
         document.getElementById('descInput').value = '';
@@ -361,7 +300,6 @@
         const tbody = document.getElementById('logBody');
         tbody.innerHTML = '';
         const entries = foodLog[date] || [];
-
         entries.forEach((e, i) => {
             tbody.innerHTML += `<tr><td>${e.time}</td><td>${e.food}</td><td>${e.calories}</td><td>${e.protein}</td><td>${e.carbs}</td><td>${e.fat}</td><td><button class="delete-btn" onclick="del(${i})">✕</button></td></tr>`;
         });
@@ -378,11 +316,9 @@
         const date = document.getElementById('logDate').value;
         const entries = foodLog[date] || [];
         if(entries.length === 0) return alert("Nothing to sync");
-        
         const btn = document.querySelector('.btn-sync');
         btn.innerText = "Syncing...";
         btn.disabled = true;
-
         try {
             await fetch(GOOGLE_SCRIPT_URL, {
                 method: "POST",
@@ -399,7 +335,6 @@
         }
     }
 
-    // Summaries
     function loadDaily() {
         const date = document.getElementById('dailyDate').value;
         const entries = foodLog[date] || [];
@@ -412,18 +347,15 @@
     }
 
     function loadWeekly() {
-        // Simple aggregation logic for weekly
         const start = new Date(document.getElementById('weekStart').value);
         const end = new Date(document.getElementById('weekEnd').value);
         let days = 0, t = { cal:0, p:0, c:0, f:0 };
-        
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
             const dateStr = d.toISOString().split('T')[0];
             const entries = foodLog[dateStr] || [];
             if(entries.length > 0) days++;
             entries.forEach(e => { t.cal+=e.calories; t.p+=e.protein; t.c+=e.carbs; t.f+=e.fat; });
         }
-        
         const div = days || 1;
         document.getElementById('wCal').innerText = Math.round(t.cal/div);
         document.getElementById('wPro').innerText = Math.round(t.p/div);
@@ -434,7 +366,6 @@
     function loadMonthly() {
         const m = document.getElementById('monthSelect').value;
         let days = 0, t = { cal:0, p:0, c:0, f:0 };
-        // Loop through all saved dates keys
         Object.keys(foodLog).forEach(date => {
             if(date.startsWith(m)) {
                 const entries = foodLog[date];
