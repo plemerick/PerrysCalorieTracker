@@ -167,16 +167,20 @@
 </div>
 
 <script>
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz6td_9d6eI-R2bFfGBihHeH1_yqDdvbfMpsbvgTNlVJbAMj7q-345kuBDhMcv5UjheMA/exec"; 
+    // --- CONFIGURATION ---
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxtiOh6A6ATY0rl0MUZg2vETqLo4Hnfc3sxlag7k0baQTCIt8Iso4VIOEypZAb4ze4FJA/exec"; 
 
+    // --- STATE ---
     let foodLog = JSON.parse(localStorage.getItem('foodLog') || '{}');
     let currentAnalysis = null;
     let imageBase64 = null;
 
+    // --- INIT ---
     initDates();
     checkKey();
     displayLog();
 
+    // --- FUNCTIONS ---
     function initDates() {
         const today = new Date();
         document.getElementById('logDate').valueAsDate = today;
