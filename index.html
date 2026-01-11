@@ -201,7 +201,6 @@
     // === CONFIGURATION ===
     // =========================================
     
-    // UPDATED URL:
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNgqvMglvRHgtwf44vxTLlYozCoVMch5Mq5E2wMg8EY5viVR23EiQwY1sOR-ZtMTFxYw/exec"; 
 
     // --- STATE ---
@@ -308,16 +307,25 @@
             });
 
             const data = await response.json();
-            if(data.error) throw new Error(typeof data.error === 'object' ? data.error.message : data.error);
+            
+            // Error Handling
+            if (data.error) throw new Error(typeof data.error === 'object' ? data.error.message : data.error);
 
-            let text = data.content[0].text.replace(/```json/g, '').replace(/```/g, '').trim();
-            currentAnalysis = JSON.parse(text);
+            // ROBUST JSON PARSING (The Fix)
+            let text = data.content[0].text;
+            const firstBrace = text.indexOf('{');
+            const lastBrace = text.lastIndexOf('}');
+            if (firstBrace !== -1 && lastBrace !== -1) {
+                text = text.substring(firstBrace, lastBrace + 1);
+            }
+            const nutrients = JSON.parse(text);
 
-            document.getElementById('resFood').innerText = currentAnalysis.food;
-            document.getElementById('resCal').innerText = currentAnalysis.calories;
-            document.getElementById('resPro').innerText = currentAnalysis.protein;
-            document.getElementById('resCarb').innerText = currentAnalysis.carbs;
-            document.getElementById('resFat').innerText = currentAnalysis.fat;
+            currentAnalysis = nutrients;
+            document.getElementById('resFood').innerText = nutrients.food;
+            document.getElementById('resCal').innerText = nutrients.calories;
+            document.getElementById('resPro').innerText = nutrients.protein;
+            document.getElementById('resCarb').innerText = nutrients.carbs;
+            document.getElementById('resFat').innerText = nutrients.fat;
             
             document.getElementById('analysisResult').style.display = 'block';
 
