@@ -5,80 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Calorie Tracker Pro</title>
     <style>
-        /* --- STYLES --- */
-        :root { --primary-grad: linear-gradient(135deg, #667eea 0%, #764ba2 100%); --secondary-grad: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        
-        body { background: var(--primary-grad); min-height: 100vh; padding: 20px; color: #333; }
+        /* --- PRO STYLES RESTORED --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            color: #333;
+        }
         .container { max-width: 1000px; margin: 0 auto; }
+        h1 { color: white; text-align: center; margin-bottom: 20px; font-size: 2.2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
         
-        h1 { text-align: center; color: white; margin-bottom: 25px; font-size: 2.2em; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
-
         /* Cards */
-        .main-card, .api-box, .view { background: rgba(255,255,255,0.95); border-radius: 15px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); margin-bottom: 20px; }
-        
+        .card, .api-setup, .tab-content { 
+            background: rgba(255, 255, 255, 0.96); 
+            border-radius: 15px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+        }
+
+        /* API Setup */
+        .api-setup h3 { color: #667eea; margin-bottom: 10px; }
+        .api-setup input { width: 100%; padding: 10px; border: 2px solid #e0e0e0; border-radius: 8px; margin-top: 5px; }
+        .api-setup button { margin-top: 10px; padding: 10px 20px; background: #2ecc71; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+
         /* Tabs */
-        .tabs { display: flex; gap: 15px; margin-bottom: 25px; justify-content: center; }
-        .tab { padding: 12px 24px; border: none; background: rgba(255, 255, 255, 0.8); cursor: pointer; font-weight: 600; color: #667eea; border-radius: 30px; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; justify-content: center; }
+        .tab { padding: 12px 24px; background: rgba(255, 255, 255, 0.8); border: none; border-radius: 30px; cursor: pointer; font-weight: 600; color: #667eea; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .tab.active { background: white; color: #764ba2; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
 
-        .view { display: none; animation: fadeIn 0.4s; }
-        .view.active { display: block; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Inputs */
-        .input-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 8px; font-weight: 600; color: #555; }
-        input[type="text"], input[type="password"], textarea { width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 16px; transition: 0.3s; background: #f9f9f9; }
-        input:focus, textarea:focus { border-color: #667eea; outline: none; background: white; }
-        textarea { resize: vertical; min-height: 100px; }
-        
-        /* Buttons */
-        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: 600; font-size: 16px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; color: white; margin-top: 15px; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .btn:active { transform: scale(0.98); }
-        
-        .btn-analyze { background: var(--secondary-grad); font-size: 1.1em; }
-        .btn-add { background: #2ecc71; }
-        .btn-sync { background: #3498db; }
-        .btn-save-key { background: #333; margin-top: 10px; }
+        textarea, input[type="date"], input[type="month"] { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-family: inherit; margin-bottom: 15px; }
+        textarea { min-height: 100px; resize: vertical; }
+        textarea:focus, input:focus { outline: none; border-color: #667eea; }
 
-        /* API Key Box */
-        .api-box { background: #333; color: white; border: 1px solid #444; }
-        .api-box h3 { color: #f093fb; margin-bottom: 10px; }
-        .api-box a { color: #f093fb; }
-        .api-box input { background: #444; border-color: #555; color: white; }
+        /* Image Upload */
+        .file-input-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
+        input[type="file"] { display: none; }
+        .file-input-label { display: block; padding: 15px; background: #f8f9fa; border: 2px dashed #667eea; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .file-input-label:hover { background: #e8ebff; }
+        .preview-image { max-width: 100%; max-height: 250px; border-radius: 8px; display: none; margin-top: 10px; border: 2px solid #eee; }
+
+        /* Buttons */
+        button.action-btn { width: 100%; padding: 14px; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+        button.action-btn:hover { transform: translateY(-2px); }
+        .btn-analyze { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .btn-add { background: #2ecc71; margin-top: 15px; }
+        .btn-sync { background: #3498db; width: auto; padding: 10px 20px; }
 
         /* Results */
-        .result-container { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-top: 25px; display: none; border: 2px dashed #667eea; }
-        .result-container h3 { color: #667eea; margin-bottom: 15px; text-align: center; }
+        .analysis-result { background: #f8f9fa; border-radius: 12px; padding: 20px; margin-top: 20px; display: none; border: 2px dashed #667eea; }
+        .macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 15px 0; }
+        .macro-item { background: white; padding: 10px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .macro-label { font-size: 0.75em; color: #764ba2; text-transform: uppercase; margin-bottom: 4px; font-weight: bold; }
+        .macro-value { font-size: 1.2em; font-weight: 800; color: #333; }
 
-        /* Macro Grid */
-        .macro-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 15px; }
-        .macro-box { background: white; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .macro-val { font-size: 1.4em; font-weight: 800; color: #333; }
-        .macro-lbl { font-size: 0.85em; color: #764ba2; text-transform: uppercase; margin-top: 5px; font-weight: 600;}
+        /* Summary Cards */
+        .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .summary-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .summary-card h3 { font-size: 0.9em; margin-bottom: 5px; opacity: 0.9; }
+        .summary-card .value { font-size: 1.8em; font-weight: bold; }
+        .summary-card .label { font-size: 0.8em; opacity: 0.8; }
 
-        /* Table */
-        table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 20px; }
-        th { text-align: left; background: #f5f5f5; color: #667eea; font-weight: 600; padding: 12px; }
-        th:first-child { border-radius: 10px 0 0 10px; }
-        th:last-child { border-radius: 0 10px 10px 0; }
-        td { padding: 12px; border-bottom: 1px solid #eee; }
-        tr:hover td { background: #f9f9f9; }
-        .delete-btn { color: #ff4757; cursor: pointer; font-weight: bold; border: none; background: none; padding: 5px 10px; border-radius: 5px; }
-        .delete-btn:hover { background: #ffe0e3; }
+        /* Tables */
+        .table-container { overflow-x: auto; margin-top: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f5f5f5; color: #667eea; padding: 10px; text-align: left; font-size: 0.9em; }
+        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 0.9em; }
+        .delete-btn { color: #ff4757; background: none; border: none; cursor: pointer; font-weight: bold; }
 
-        /* Image Preview */
-        #preview { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; margin-top: 15px; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 2px solid #eee;}
-        input[type="file"] { padding: 10px; background: white; }
-
-        /* Loading Spinner */
-        .loader { display: none; text-align: center; padding: 30px; color: #667eea; font-weight: 600; font-size: 1.1em; }
-        .loader::after { content: '...'; animation: dots 1.5s steps(4, end) infinite; }
-        @keyframes dots { 0%, 20% { content: '.'; } 40% { content: '..'; } 60%, 100% { content: '...'; } }
-
-        @media (max-width: 600px) { .macro-row { grid-template-columns: repeat(2, 1fr); } }
+        .loading { display: none; text-align: center; color: #667eea; padding: 20px; font-weight: bold; }
+        
+        @media (max-width: 600px) { .macro-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
@@ -86,73 +91,109 @@
 <div class="container">
     <h1>🍽️ AI Calorie Tracker Pro</h1>
 
-    <div id="apiSetup" class="api-box">
+    <div class="api-setup" id="apiSetup">
         <h3>⚙️ Setup Required</h3>
-        <p style="font-size: 0.9em; margin: 10px 0;">Enter your Anthropic API Key (sk-ant...)</p>
-        <input type="password" id="apiKeyInput" placeholder="Paste key here...">
-        <button class="btn btn-save-key" onclick="saveKey()">Save Key</button>
+        <p>Enter your Anthropic API Key (sk-ant...)</p>
+        <input type="password" id="apiKey" placeholder="Paste API Key here...">
+        <button onclick="saveApiKey()">Save API Key</button>
     </div>
 
     <div class="tabs">
-        <button class="tab active" onclick="showView('logger')">📝 Log Food</button>
-        <button class="tab" onclick="showView('history')">📊 History</button>
+        <button class="tab active" onclick="switchTab('logger')">📝 Log Food</button>
+        <button class="tab" onclick="switchTab('daily')">📊 Daily</button>
+        <button class="tab" onclick="switchTab('weekly')">📈 Weekly</button>
+        <button class="tab" onclick="switchTab('monthly')">📅 Monthly</button>
     </div>
 
-    <div id="logger" class="view active">
-        <div class="input-group">
-            <label>✍️ Describe your food (or paste an image)</label>
-            <textarea id="descInput" rows="4" placeholder="e.g., grilled chicken breast, brown rice, steamed broccoli with olive oil..."></textarea>
-            <div style="margin-top: 15px;">
-                 <label>📸 Upload Image</label>
-                 <input type="file" id="fileInput" accept="image/*">
+    <div id="logger" class="tab-content active">
+        <div class="card">
+            <label>📝 Describe food (or upload image)</label>
+            <textarea id="descInput" placeholder="e.g. 2 eggs, toast, and coffee..."></textarea>
+            
+            <div class="file-input-wrapper">
+                <label for="fileInput" class="file-input-label">📸 Click to Upload Photo</label>
+                <input type="file" id="fileInput" accept="image/*">
             </div>
-            <img id="preview" alt="Image Preview">
-        </div>
+            <img id="preview" class="preview-image">
 
-        <button class="btn btn-analyze" onclick="analyze()">🤖 Analyze with AI</button>
-        
-        <div id="loader" class="loader">Analyzing nutrition</div>
+            <button class="action-btn btn-analyze" onclick="analyze()">🤖 Analyze with AI</button>
+            <div id="loader" class="loading">Analyzing nutrition...</div>
 
-        <div id="resultCard" class="result-container">
-            <h3 id="resFood">Food Name</h3>
-            <div class="macro-row">
-                <div class="macro-box"><div class="macro-val" id="resCal">0</div><div class="macro-lbl">Calories</div></div>
-                <div class="macro-box"><div class="macro-val" id="resPro">0</div><div class="macro-lbl">Protein</div></div>
-                <div class="macro-box"><div class="macro-val" id="resCarb">0</div><div class="macro-lbl">Carbs</div></div>
-                <div class="macro-box"><div class="macro-val" id="resFat">0</div><div class="macro-lbl">Fat</div></div>
-            </div>
-            <button class="btn btn-add" onclick="addEntry()">➕ Add to Today's Log</button>
-        </div>
-    </div>
-
-    <div id="history" class="view">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px;">
-            <h2 style="color: #667eea; font-size: 1.5em;">Today's Log</h2>
-            <div>
-                <button class="btn btn-sync" onclick="sync()" style="width: auto; padding: 10px 20px; margin:0; font-size: 0.9em;">☁️ Sync to Sheets</button>
-                <div id="syncStatus" style="text-align:right; font-size:0.8em; color:#666; margin-top:5px; height:20px; font-weight: 600;"></div>
+            <div id="analysisResult" class="analysis-result">
+                <h3 id="resFood" style="color:#667eea; text-align:center; margin-bottom:10px;">Food Name</h3>
+                <div class="macro-grid">
+                    <div class="macro-item"><div class="macro-label">Calories</div><div class="macro-value" id="resCal">0</div></div>
+                    <div class="macro-item"><div class="macro-label">Protein</div><div class="macro-value" id="resPro">0</div></div>
+                    <div class="macro-item"><div class="macro-label">Carbs</div><div class="macro-value" id="resCarb">0</div></div>
+                    <div class="macro-item"><div class="macro-label">Fat</div><div class="macro-value" id="resFat">0</div></div>
+                </div>
+                <button class="action-btn btn-add" onclick="addEntry()">➕ Add to Log</button>
             </div>
         </div>
 
-        <div style="overflow-x: auto; background: white; border-radius: 12px; padding: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-            <table id="logTable">
-                <thead>
-                    <tr><th>Time</th><th>Food</th><th>Cal</th><th>P (g)</th><th>C (g)</th><th>F (g)</th><th></th></tr>
-                </thead>
-                <tbody id="logBody"></tbody>
-            </table>
-        </div>
-        
-        <div class="result-container" style="display:block; background: #e8ebff; border: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);">
-            <h3 style="margin-bottom: 10px; font-size: 1.1em;">Daily Totals</h3>
-            <div class="macro-row">
-                 <div class="macro-box" style="background: rgba(255,255,255,0.7);"><div class="macro-val" id="totalCal">0</div><div class="macro-lbl">Total Cal</div></div>
-                 <div class="macro-box" style="background: rgba(255,255,255,0.7);"><div class="macro-val" id="totalPro">0</div><div class="macro-lbl">Total Pro</div></div>
-                 <div class="macro-box" style="background: rgba(255,255,255,0.7);"><div class="macro-val" id="totalCarb">0</div><div class="macro-lbl">Total Carb</div></div>
-                 <div class="macro-box" style="background: rgba(255,255,255,0.7);"><div class="macro-val" id="totalFat">0</div><div class="macro-lbl">Total Fat</div></div>
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3>Today's Log</h3>
+                <button class="action-btn btn-sync" onclick="sync()">☁️ Sync to Sheets</button>
+            </div>
+            <div id="syncStatus" style="text-align:right; font-size:0.8em; color:#666; margin-top:5px;"></div>
+            
+            <input type="date" id="logDate">
+            <div class="table-container">
+                <table id="logTable">
+                    <thead><tr><th>Time</th><th>Food</th><th>Cal</th><th>P</th><th>C</th><th>F</th><th></th></tr></thead>
+                    <tbody id="logBody"></tbody>
+                </table>
             </div>
         </div>
     </div>
+
+    <div id="daily" class="tab-content">
+        <div class="card">
+            <h3>📊 Daily Summary</h3>
+            <input type="date" id="dailyDate">
+            <div class="summary-cards">
+                <div class="summary-card"><h3>Calories</h3><div class="value" id="dCal">0</div><div class="label">kcal</div></div>
+                <div class="summary-card"><h3>Protein</h3><div class="value" id="dPro">0</div><div class="label">g</div></div>
+                <div class="summary-card"><h3>Carbs</h3><div class="value" id="dCarb">0</div><div class="label">g</div></div>
+                <div class="summary-card"><h3>Fat</h3><div class="value" id="dFat">0</div><div class="label">g</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="weekly" class="tab-content">
+        <div class="card">
+            <h3>📈 Weekly Summary</h3>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <input type="date" id="weekStart">
+                <input type="date" id="weekEnd">
+                <button onclick="loadWeekly()" style="padding:0 15px; border-radius:8px; border:none; background:#667eea; color:white;">Load</button>
+            </div>
+            <div class="summary-cards">
+                <div class="summary-card"><h3>Avg Cal</h3><div class="value" id="wCal">0</div></div>
+                <div class="summary-card"><h3>Avg Pro</h3><div class="value" id="wPro">0</div></div>
+                <div class="summary-card"><h3>Avg Carb</h3><div class="value" id="wCarb">0</div></div>
+                <div class="summary-card"><h3>Avg Fat</h3><div class="value" id="wFat">0</div></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="monthly" class="tab-content">
+        <div class="card">
+            <h3>📅 Monthly Summary</h3>
+            <div style="display:flex; gap:10px; margin-bottom:10px;">
+                <input type="month" id="monthSelect">
+                <button onclick="loadMonthly()" style="padding:0 15px; border-radius:8px; border:none; background:#667eea; color:white;">Load</button>
+            </div>
+            <div class="summary-cards">
+                <div class="summary-card"><h3>Avg Cal</h3><div class="value" id="mCal">0</div></div>
+                <div class="summary-card"><h3>Avg Pro</h3><div class="value" id="mPro">0</div></div>
+                <div class="summary-card"><h3>Avg Carb</h3><div class="value" id="mCarb">0</div></div>
+                <div class="summary-card"><h3>Avg Fat</h3><div class="value" id="mFat">0</div></div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script>
@@ -161,47 +202,61 @@
     // =========================================
     
     // UPDATED URL:
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwyTUXb66wg-Qqm_ND1ZBQiLkUbZQ2-EFAso7NqbQICn9MddGj-03mGpqVQh657bN4-BQ/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxNgqvMglvRHgtwf44vxTLlYozCoVMch5Mq5E2wMg8EY5viVR23EiQwY1sOR-ZtMTFxYw/exec"; 
 
     // --- STATE ---
-    let logs = JSON.parse(localStorage.getItem('logs') || '[]');
+    let foodLog = JSON.parse(localStorage.getItem('foodLog') || '{}');
     let currentAnalysis = null;
     let imageBase64 = null;
 
     // --- INIT ---
+    initDates();
     checkKey();
-    renderLogs();
+    displayLog();
 
     // --- FUNCTIONS ---
+    function initDates() {
+        const today = new Date();
+        document.getElementById('logDate').valueAsDate = today;
+        document.getElementById('dailyDate').valueAsDate = today;
+        document.getElementById('weekEnd').valueAsDate = today;
+        const lastWeek = new Date(); lastWeek.setDate(today.getDate() - 6);
+        document.getElementById('weekStart').valueAsDate = lastWeek;
+        document.getElementById('monthSelect').value = today.toISOString().substring(0, 7);
+        
+        // Listeners
+        document.getElementById('logDate').addEventListener('change', displayLog);
+        document.getElementById('dailyDate').addEventListener('change', loadDaily);
+    }
+
     function checkKey() {
-        if(localStorage.getItem('anthropicKey')) {
+        if(localStorage.getItem('anthropicApiKey')) {
             document.getElementById('apiSetup').style.display = 'none';
         }
     }
 
-    function saveKey() {
-        // Validation removed to prevent issues. Just checks if it exists.
-        const key = document.getElementById('apiKeyInput').value.trim();
+    function saveApiKey() {
+        const key = document.getElementById('apiKey').value.trim();
         if(key.length > 5) {
-            localStorage.setItem('anthropicKey', key);
+            localStorage.setItem('anthropicApiKey', key);
             checkKey();
-            alert("✅ Key Saved Successfully!");
         } else {
-            alert("⚠️ Key looks too short. Please paste the full key.");
+            alert("Key too short");
         }
     }
 
-    function showView(viewId) {
-        document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-        document.getElementById(viewId).classList.add('active');
+    function switchTab(id) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         event.target.classList.add('active');
+        document.getElementById(id).classList.add('active');
+        if(id === 'daily') loadDaily();
     }
 
     // Image Handling
     document.getElementById('fileInput').addEventListener('change', handleFile);
     document.addEventListener('paste', e => {
-        if(e.clipboardData.items[0].type.startsWith('image')) {
+        if(e.clipboardData.items[0]?.type.startsWith('image')) {
             handleFile({ target: { files: [e.clipboardData.items[0].getAsFile()] } });
         }
     });
@@ -221,160 +276,169 @@
     // AI Analysis
     async function analyze() {
         const desc = document.getElementById('descInput').value;
-        const apiKey = localStorage.getItem('anthropicKey');
+        const apiKey = localStorage.getItem('anthropicApiKey');
         
-        if(!apiKey) return alert('Please enter API Key first');
+        if(!apiKey) return alert('Enter API Key first');
         if(!desc && !imageBase64) return alert('Enter text or image');
 
         document.getElementById('loader').style.display = 'block';
-        document.getElementById('resultCard').style.display = 'none';
+        document.getElementById('analysisResult').style.display = 'none';
 
         let messages = [];
         let content = [];
         
         if(imageBase64) {
-            content.push({
-                type: "image",
-                source: { type: "base64", media_type: window.currentMime || "image/jpeg", data: imageBase64 }
-            });
+            content.push({ type: "image", source: { type: "base64", media_type: window.currentMime || "image/jpeg", data: imageBase64 } });
         }
-        if(desc) {
-            content.push({ type: "text", text: desc || "Analyze this food. Provide nutritional estimates." });
-        }
+        if(desc) content.push({ type: "text", text: desc });
+        else content.push({ type: "text", text: "Analyze this food image." });
+
         messages.push({ role: "user", content: content });
 
         try {
-            console.log("Sending request...");
             const response = await fetch(GOOGLE_SCRIPT_URL, {
                 method: "POST",
                 headers: { "Content-Type": "text/plain" },
                 body: JSON.stringify({
                     action: 'analyze',
                     apiKey: apiKey,
-                    system: "You are a nutritional analysis expert. Return ONLY a raw JSON object (no markdown, no intro) with keys: \"food\" (string), \"calories\" (int), \"protein\" (int), \"carbs\" (int), \"fat\" (int).",
+                    system: "You are a nutritional expert. Return ONLY raw JSON (no markdown): {\"food\": \"string\", \"calories\": int, \"protein\": int, \"carbs\": int, \"fat\": int}.",
                     messages: messages
                 })
             });
 
             const data = await response.json();
+            if(data.error) throw new Error(typeof data.error === 'object' ? data.error.message : data.error);
+
+            let text = data.content[0].text.replace(/```json/g, '').replace(/```/g, '').trim();
+            currentAnalysis = JSON.parse(text);
+
+            document.getElementById('resFood').innerText = currentAnalysis.food;
+            document.getElementById('resCal').innerText = currentAnalysis.calories;
+            document.getElementById('resPro').innerText = currentAnalysis.protein;
+            document.getElementById('resCarb').innerText = currentAnalysis.carbs;
+            document.getElementById('resFat').innerText = currentAnalysis.fat;
             
-            // ERROR HANDLING (Fix for object object error)
-            if (data.error) {
-                let msg = typeof data.error === 'object' ? (data.error.message || JSON.stringify(data.error)) : data.error;
-                throw new Error("API Error: " + msg);
-            }
+            document.getElementById('analysisResult').style.display = 'block';
 
-            let text = data.content[0].text;
-            text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-            const nutrients = JSON.parse(text);
-
-            currentAnalysis = nutrients;
-            document.getElementById('resFood').innerText = nutrients.food;
-            document.getElementById('resCal').innerText = nutrients.calories;
-            document.getElementById('resPro').innerText = nutrients.protein;
-            document.getElementById('resCarb').innerText = nutrients.carbs;
-            document.getElementById('resFat').innerText = nutrients.fat;
-            
-            document.getElementById('resultCard').style.display = 'block';
-
-        } catch (e) {
-            console.error(e);
-            alert(e.message);
+        } catch(e) {
+            alert("Error: " + e.message);
         } finally {
             document.getElementById('loader').style.display = 'none';
         }
     }
 
-    // Logging & Sync Logic
+    // Logging
     function addEntry() {
         if(!currentAnalysis) return;
-        const entry = {
-            ...currentAnalysis,
-            time: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-            date: new Date().toLocaleDateString()
-        };
-        logs.unshift(entry);
-        localStorage.setItem('logs', JSON.stringify(logs));
-        renderLogs();
-        showView('history');
+        const date = document.getElementById('logDate').value;
+        if(!foodLog[date]) foodLog[date] = [];
         
-        // Reset Inputs
+        foodLog[date].unshift({
+            time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
+            ...currentAnalysis
+        });
+        
+        localStorage.setItem('foodLog', JSON.stringify(foodLog));
+        displayLog();
         document.getElementById('descInput').value = '';
         document.getElementById('preview').style.display = 'none';
-        document.getElementById('resultCard').style.display = 'none';
+        document.getElementById('analysisResult').style.display = 'none';
         imageBase64 = null;
         currentAnalysis = null;
     }
 
-    function renderLogs() {
+    function displayLog() {
+        const date = document.getElementById('logDate').value;
         const tbody = document.getElementById('logBody');
         tbody.innerHTML = '';
-        
-        let totals = { cal: 0, pro: 0, carb: 0, fat: 0 };
+        const entries = foodLog[date] || [];
 
-        logs.forEach((log, index) => {
-            totals.cal += log.calories || 0;
-            totals.pro += log.protein || 0;
-            totals.carb += log.carbs || 0;
-            totals.fat += log.fat || 0;
-
-            tbody.innerHTML += `
-                <tr>
-                    <td>${log.time}</td>
-                    <td><div style="font-weight:600">${log.food}</div></td>
-                    <td>${log.calories}</td>
-                    <td>${log.protein}</td>
-                    <td>${log.carbs}</td>
-                    <td>${log.fat}</td>
-                    <td><button class="delete-btn" onclick="remove(${index})">🗑️</button></td>
-                </tr>
-            `;
+        entries.forEach((e, i) => {
+            tbody.innerHTML += `<tr><td>${e.time}</td><td>${e.food}</td><td>${e.calories}</td><td>${e.protein}</td><td>${e.carbs}</td><td>${e.fat}</td><td><button class="delete-btn" onclick="del(${i})">✕</button></td></tr>`;
         });
-
-        document.getElementById('totalCal').innerText = totals.cal;
-        document.getElementById('totalPro').innerText = totals.pro;
-        document.getElementById('totalCarb').innerText = totals.carb;
-        document.getElementById('totalFat').innerText = totals.fat;
     }
 
-    function remove(index) {
-        if(confirm("Delete this entry?")) {
-            logs.splice(index, 1);
-            localStorage.setItem('logs', JSON.stringify(logs));
-            renderLogs();
-        }
+    function del(i) {
+        const date = document.getElementById('logDate').value;
+        foodLog[date].splice(i, 1);
+        localStorage.setItem('foodLog', JSON.stringify(foodLog));
+        displayLog();
     }
 
     async function sync() {
-        const btn = document.querySelector('.btn-sync');
-        const status = document.getElementById('syncStatus');
+        const date = document.getElementById('logDate').value;
+        const entries = foodLog[date] || [];
+        if(entries.length === 0) return alert("Nothing to sync");
         
-        if(logs.length === 0) return alert("Nothing to sync");
-
+        const btn = document.querySelector('.btn-sync');
+        btn.innerText = "Syncing...";
         btn.disabled = true;
-        status.innerText = "⏳ Syncing...";
-        status.style.color = "#667eea";
 
         try {
             await fetch(GOOGLE_SCRIPT_URL, {
                 method: "POST",
                 headers: { "Content-Type": "text/plain" },
-                body: JSON.stringify({
-                    action: 'sync',
-                    date: new Date().toLocaleDateString(),
-                    entries: logs
-                })
+                body: JSON.stringify({ action: 'sync', date: date, entries: entries })
             });
-            status.innerText = "✅ Synced successfully!";
-            status.style.color = "#2ecc71";
-            setTimeout(() => { status.innerText = ""; }, 4000);
+            btn.innerText = "✓ Synced";
+            setTimeout(() => btn.innerText = "☁️ Sync to Sheets", 2000);
         } catch(e) {
-            status.innerText = "❌ Sync failed";
-            status.style.color = "#ff4757";
-            alert("Sync failed: " + e.message);
+            alert("Sync Failed: " + e.message);
+            btn.innerText = "Error";
         } finally {
             btn.disabled = false;
         }
+    }
+
+    // Summaries
+    function loadDaily() {
+        const date = document.getElementById('dailyDate').value;
+        const entries = foodLog[date] || [];
+        let t = { cal:0, p:0, c:0, f:0 };
+        entries.forEach(e => { t.cal+=e.calories; t.p+=e.protein; t.c+=e.carbs; t.f+=e.fat; });
+        document.getElementById('dCal').innerText = t.cal;
+        document.getElementById('dPro').innerText = t.p;
+        document.getElementById('dCarb').innerText = t.c;
+        document.getElementById('dFat').innerText = t.f;
+    }
+
+    function loadWeekly() {
+        // Simple aggregation logic for weekly
+        const start = new Date(document.getElementById('weekStart').value);
+        const end = new Date(document.getElementById('weekEnd').value);
+        let days = 0, t = { cal:0, p:0, c:0, f:0 };
+        
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            const dateStr = d.toISOString().split('T')[0];
+            const entries = foodLog[dateStr] || [];
+            if(entries.length > 0) days++;
+            entries.forEach(e => { t.cal+=e.calories; t.p+=e.protein; t.c+=e.carbs; t.f+=e.fat; });
+        }
+        
+        const div = days || 1;
+        document.getElementById('wCal').innerText = Math.round(t.cal/div);
+        document.getElementById('wPro').innerText = Math.round(t.p/div);
+        document.getElementById('wCarb').innerText = Math.round(t.c/div);
+        document.getElementById('wFat').innerText = Math.round(t.f/div);
+    }
+
+    function loadMonthly() {
+        const m = document.getElementById('monthSelect').value;
+        let days = 0, t = { cal:0, p:0, c:0, f:0 };
+        // Loop through all saved dates keys
+        Object.keys(foodLog).forEach(date => {
+            if(date.startsWith(m)) {
+                const entries = foodLog[date];
+                if(entries.length > 0) days++;
+                entries.forEach(e => { t.cal+=e.calories; t.p+=e.protein; t.c+=e.carbs; t.f+=e.fat; });
+            }
+        });
+        const div = days || 1;
+        document.getElementById('mCal').innerText = Math.round(t.cal/div);
+        document.getElementById('mPro').innerText = Math.round(t.p/div);
+        document.getElementById('mCarb').innerText = Math.round(t.c/div);
+        document.getElementById('mFat').innerText = Math.round(t.f/div);
     }
 </script>
 
